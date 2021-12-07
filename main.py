@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import string
+from tkinter import font
 import pyperclip
 import json
 
@@ -13,6 +14,11 @@ NUMBERS = string.digits
 SYMBOLS = "!@#$%^&*()"
 COMBINED_LIST = list(LETTERS + NUMBERS + SYMBOLS)
 
+BLACK = "#1A1A1B"
+BUTTON_COLOR = "#00D1CD"
+CYAN = "#7DEDFF"
+GREY = "#393E46"
+BG = "#353941"
 
 def generate_password():
     password_entry.delete(0, END)
@@ -83,48 +89,75 @@ def find_password():
         else:
             messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
             
-
+def show_all_details():
+    with open("data.json", "r") as data_file:
+        data = json.load(data_file)
+        details_window = Tk()
+        details_window.title("Password Details")
+        details_window.config(bg=BLACK)
+        details_window.config(padx=10, pady=10)
+        row_index = 0
+        
+        for key in data.keys():
+            website_string = Label(details_window, text=f"{key}:", font=FONT, bg=BLACK, fg="grey")
+            website_string.grid(column=0, row=row_index)
+            
+            email = data[key]["email"]
+            password = data[key]["password"]
+            details = Label(details_window, text=f"  Email: {email}\nPassword: {password}",
+                            font=(FONT_NAME, 11), bg=BLACK, fg="#7DEDFF")
+            details.config(padx=10, pady=15)
+            details.grid(column=1, row=row_index)
+            
+            row_index += 1
+        
 
 
 window = Tk()
 window.title("Password Manager")
-window.config(padx=50, pady=50)
+window.config(padx=50, pady=50, bg=BLACK)
 
-canvas = Canvas(width=200, height=200, highlightthickness=0)
+canvas = Canvas(width=200, height=200, highlightthickness=0, bg=BLACK)
 logo_img = PhotoImage(file="logo.png")
 canvas.create_image(100, 100, image=logo_img)
 canvas.grid(row=0, column=1)
 
 # LABELS
-website_label = Label(text="Website:", font=FONT)
+website_label = Label(text="Website:", font=FONT, fg=CYAN, bg=BLACK)
 website_label.grid(row=1, column=0)
 
-email_label = Label(text="Email/Username:", font=FONT)
+email_label = Label(text="Email/Username:", font=FONT, fg=CYAN, bg=BLACK)
 email_label.config(padx=35)
 email_label.grid(row=2, column=0)
 
-password_label = Label(text="Password:", font=FONT)
+password_label = Label(text="Password:", font=FONT, fg=CYAN, bg=BLACK)
 password_label.grid(row=3, column=0)
 
 # ENTRIES
-website_entry = Entry(width=38)
+website_entry = Entry(width=38, bg=BG, fg="white", bd=0)
 website_entry.grid(row=1, column=1)
 website_entry.focus()
 
-email_entry = Entry(width=57)
+email_entry = Entry(width=57, bg=BG, fg="white", bd=0)
 email_entry.insert(0, "example@gmail.com")
 email_entry.grid(row=2, column=1, columnspan=2)
 
-password_entry = Entry(width=38)
+password_entry = Entry(width=38, bg=BG, fg="white", bd=0)
 password_entry.grid(row=3, column=1)
 
 # BUTTONS
-search_button = Button(text="Search", width=12, command=find_password)
+search_button = Button(text="Search", width=12, command=find_password, fg=BUTTON_COLOR, bg=GREY, bd=0)
 search_button.grid(row=1, column=2)
-generate_password_button = Button(text="Generate Password", command=generate_password)
+
+generate_password_button = Button(text="Generate Password", command=generate_password, 
+                                  fg=BUTTON_COLOR, bg=GREY, bd=0)
 generate_password_button.grid(row=3, column=2)
 
-add_button = Button(text="Add", width=48, command=save)
-add_button.grid(row=4, column=1, columnspan=2)
+add_button = Button(text="Add", width=48, command=save, fg=BUTTON_COLOR, bg=GREY, bd=0)
+add_button.grid(row=4, column=1, columnspan=2, pady=7)
+
+show_details_button = Button(text="Show all passwords", width=48, command=show_all_details,
+                    fg=BUTTON_COLOR, bg=GREY, bd=0)
+show_details_button.grid(row=5, column=1, columnspan=2)
 
 window.mainloop()
