@@ -3,6 +3,7 @@ from tkinter import messagebox
 import random
 import string
 import pyperclip
+import json
 
 FONT_NAME = "JetBrains Mono"
 FONT = (FONT_NAME, 12, "bold")
@@ -29,24 +30,34 @@ def generate_password():
     password_entry.insert(0, password)
     pyperclip.copy(password)
 
+
 def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-
+    
     if len(website) == 0 or len(password) == 0:
         messagebox.showwarning(
             title="Bruh", message="Make sure you don't have any empty fields.")
     else:
-        confirmation = messagebox.askokcancel(title=website,
-                                              message="These are the details entered: "
-                                              f"\nEmail: {email}\nPassword: {password}\nConfirm?")
-
-        if confirmation == True:
-            with(open("passwords.txt", "a")) as password_file:
-                password_file.write(f"{website} | {email} | {password}\n")
-                website_entry.delete(0, END)
-                password_entry.delete(0, END)
+        new_data = {
+        website: {
+            "email": email,
+            "password": password
+        }
+    }
+        with(open("passwords.json", "r")) as data_file:
+            # Reading the old data
+            data = json.load(data_file)
+            # Updating the old data
+            data.update(new_data)
+            
+        with open("passwords.json", "w") as data_file:
+            # Saving the updated data
+            json.dump(data, data_file, indent=4)
+            
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 
 window = Tk()
@@ -82,7 +93,8 @@ password_entry = Entry(width=38)
 password_entry.grid(row=3, column=1)
 
 # BUTTONS
-generate_password_button = Button(text="Generate Password", command=generate_password)
+generate_password_button = Button(
+    text="Generate Password", command=generate_password)
 generate_password_button.grid(row=3, column=2)
 
 add_button = Button(text="Add", width=48, command=save)
