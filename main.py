@@ -1,9 +1,30 @@
 from tkinter import *
 from tkinter import messagebox
+import random
+import string
 
 FONT_NAME = "JetBrains Mono"
 FONT = (FONT_NAME, 12, "bold")
 
+LETTERS = string.ascii_letters
+NUMBERS = string.digits
+SYMBOLS = "!@#$%^&*()"
+COMBINED_LIST = list(LETTERS + NUMBERS + SYMBOLS)
+
+
+def generate_password():
+    password_entry.delete(0, END)
+    random.shuffle(COMBINED_LIST)
+    max_length = 12
+    password_list = []
+
+    # add a random char from the COMBINED_LIST till the provided max password length has been reached
+    for _ in range(max_length):
+        password_list.append(random.choice(COMBINED_LIST))
+
+    # shuffle the list and print out the password to the terminal
+    random.shuffle(password_list)
+    password_entry.insert(0, "".join(password_list))
 
 def save():
     website = website_entry.get()
@@ -58,7 +79,7 @@ password_entry = Entry(width=38)
 password_entry.grid(row=3, column=1)
 
 # BUTTONS
-generate_password_button = Button(text="Generate Password")
+generate_password_button = Button(text="Generate Password", command=generate_password)
 generate_password_button.grid(row=3, column=2)
 
 add_button = Button(text="Add", width=48, command=save)
