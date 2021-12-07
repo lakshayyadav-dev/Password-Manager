@@ -1,20 +1,28 @@
 from tkinter import *
+from tkinter import messagebox
 
 FONT_NAME = "JetBrains Mono"
 FONT = (FONT_NAME, 12, "bold")
-
 
 
 def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-    
-    with(open("data.txt", "a")) as data_file:
-        data_file.write(f"{website} | {email} | {password}")
 
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showwarning(
+            title="Bruh", message="Make sure you don't have any empty fields.")
+    else:
+        confirmation = messagebox.askokcancel(title=website,
+                                              message="These are the details entered: "
+                                              f"\nEmail: {email}\nPassword: {password}\nConfirm?")
 
-
+        if confirmation == True:
+            with(open("data.txt", "a")) as data_file:
+                data_file.write(f"{website} | {email} | {password}\n")
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
 
 window = Tk()
