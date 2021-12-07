@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import string
+import pyperclip
 
 FONT_NAME = "JetBrains Mono"
 FONT = (FONT_NAME, 12, "bold")
@@ -24,7 +25,9 @@ def generate_password():
 
     # shuffle the list and print out the password to the terminal
     random.shuffle(password_list)
-    password_entry.insert(0, "".join(password_list))
+    password = "".join(password_list)
+    password_entry.insert(0, password)
+    pyperclip.copy(password)
 
 def save():
     website = website_entry.get()
@@ -40,8 +43,8 @@ def save():
                                               f"\nEmail: {email}\nPassword: {password}\nConfirm?")
 
         if confirmation == True:
-            with(open("data.txt", "a")) as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
+            with(open("passwords.txt", "a")) as password_file:
+                password_file.write(f"{website} | {email} | {password}\n")
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
 
