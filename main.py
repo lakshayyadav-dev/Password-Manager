@@ -97,7 +97,10 @@ def show_all_details():
         details_window.title("Password Details")
         details_window.config(bg=BLACK)
         details_window.config(padx=10, pady=10)
-        row_index = 0
+        row_index = 1
+        
+        title = Label(details_window, text="Passwords: ", font=(FONT_NAME, 16, "bold"), bg=BLACK, fg=WHITE)
+        title.grid(column=0, row=0)
         
         for key in data.keys():
             website_string = Label(details_window, text=f"{key}:", font=FONT, bg=BLACK, fg=CYAN)
@@ -105,10 +108,10 @@ def show_all_details():
             
             email = data[key]["email"]
             password = data[key]["password"]
-            details = Label(details_window, text=f"  Email: {email}\nPassword: {password}",
+            details_label = Label(details_window, text=f"  Email: {email}\nPassword: {password}",
                             font=(FONT_NAME, 11), bg=BLACK, fg=WHITE)
-            details.config(padx=10, pady=15)
-            details.grid(column=1, row=row_index)
+            details_label.config(padx=10, pady=15)
+            details_label.grid(column=1, row=row_index)
             
             row_index += 1
         
