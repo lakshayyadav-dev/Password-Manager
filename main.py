@@ -18,6 +18,7 @@ BLACK = "#1A1A1B"
 BUTTON_COLOR = "#00D1CD"
 CYAN = "#7DEDFF"
 GREY = "#393E46"
+WHITE = "#BBBFCA"
 BG = "#353941"
 
 def generate_password():
@@ -99,13 +100,13 @@ def show_all_details():
         row_index = 0
         
         for key in data.keys():
-            website_string = Label(details_window, text=f"{key}:", font=FONT, bg=BLACK, fg="grey")
+            website_string = Label(details_window, text=f"{key}:", font=FONT, bg=BLACK, fg=CYAN)
             website_string.grid(column=0, row=row_index)
             
             email = data[key]["email"]
             password = data[key]["password"]
             details = Label(details_window, text=f"  Email: {email}\nPassword: {password}",
-                            font=(FONT_NAME, 11), bg=BLACK, fg="#7DEDFF")
+                            font=(FONT_NAME, 11), bg=BLACK, fg=WHITE)
             details.config(padx=10, pady=15)
             details.grid(column=1, row=row_index)
             
@@ -138,7 +139,7 @@ website_entry = Entry(width=38, bg=BG, fg="white", bd=0)
 website_entry.grid(row=1, column=1)
 website_entry.focus()
 
-email_entry = Entry(width=57, bg=BG, fg="white", bd=0)
+email_entry = Entry(width=56, bg=BG, fg="white", bd=0)
 email_entry.insert(0, "example@gmail.com")
 email_entry.grid(row=2, column=1, columnspan=2)
 
@@ -146,18 +147,19 @@ password_entry = Entry(width=38, bg=BG, fg="white", bd=0)
 password_entry.grid(row=3, column=1)
 
 # BUTTONS
-search_button = Button(text="Search", width=12, command=find_password, fg=BUTTON_COLOR, bg=GREY, bd=0)
+search_button = Button(text="Search", width=13, command=find_password, fg=WHITE, bg=GREY, bd=0, 
+                       font=(FONT_NAME, 9))
 search_button.grid(row=1, column=2)
 
-generate_password_button = Button(text="Generate Password", command=generate_password, 
-                                  fg=BUTTON_COLOR, bg=GREY, bd=0)
+generate_password_button = Button(width=13, text="Generate", command=generate_password, 
+                                  fg=WHITE, bg=GREY, bd=0, font=(FONT_NAME, 9))
 generate_password_button.grid(row=3, column=2)
 
-add_button = Button(text="Add", width=48, command=save, fg=BUTTON_COLOR, bg=GREY, bd=0)
+add_button = Button(text="Add", width=48, command=save, fg=WHITE, bg=GREY, bd=0, font=(FONT_NAME, 9))
 add_button.grid(row=4, column=1, columnspan=2, pady=7)
 
 show_details_button = Button(text="Show all passwords", width=48, command=show_all_details,
-                    fg=BUTTON_COLOR, bg=GREY, bd=0)
+                    fg=WHITE, bg=GREY, bd=0, font=(FONT_NAME, 9))
 show_details_button.grid(row=5, column=1, columnspan=2)
 
 window.mainloop()
